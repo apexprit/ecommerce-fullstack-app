@@ -1,0 +1,41 @@
+# Render Blueprint for E-commerce Application
+# This file defines the infrastructure for deploying backend and frontend
+
+services:
+  # Backend API Service
+  - type: web
+    name: ecommerce-backend
+    env: node
+    region: oregon  # Change to your preferred region
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGODB_URI
+        sync: false  # Set this in Render dashboard with your MongoDB Atlas URI
+      - key: JWT_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        sync: false  # Set this after frontend is deployed
+      - key: CORS_ORIGIN
+        sync: false  # Set this after frontend is deployed
+
+  # Frontend Static Site (optional - can use Vercel instead)
+  - type: web
+    name: ecommerce-frontend
+    env: static
+    region: oregon
+    plan: free
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        sync: false  # Set this to your backend URL after deployment
