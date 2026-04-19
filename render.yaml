@@ -25,7 +25,7 @@ services:
         sync: false  # Set this after frontend is deployed
 
   # Frontend Static Site (optional - can use Vercel instead)
-  - type: static
+  - type: static_site
     name: ecommerce-frontend
     plan: free
     buildCommand: cd frontend && npm install && npm run build
