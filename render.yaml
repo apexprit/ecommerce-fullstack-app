@@ -1,5 +1,6 @@
 # Render Blueprint for E-commerce Application
 # This file defines the infrastructure for deploying backend and frontend
+blueprintVersion: 1
 
 services:
   # Backend API Service
@@ -24,10 +25,11 @@ services:
       - key: CORS_ORIGIN
         sync: false  # Set this after frontend is deployed
 
-  # Frontend Static Site (optional - can use Vercel instead)
+  # Frontend Static Site (recommended for SPAs)
   - type: static_site
     name: ecommerce-frontend
     plan: free
+    region: oregon  # Optional, defaults to us-east-1
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: ./frontend/dist
     routes:
@@ -37,3 +39,16 @@ services:
     envVars:
       - key: VITE_API_URL
         sync: false  # Set this to your backend URL after deployment
+
+# Fallback web service configuration (if static_site is not suitable)
+# Uncomment below and comment the static_site above to deploy frontend as a web service
+#  - type: web
+#    name: ecommerce-frontend-web
+#    env: node
+#    region: oregon
+#    plan: free
+#    buildCommand: cd frontend && npm install && npm run build
+#    startCommand: cd frontend && npm run preview  # or serve with a static server
+#    envVars:
+#      - key: VITE_API_URL
+#        sync: false
