@@ -119,4 +119,15 @@ frontend/.env.production
 .docker/
 
 # Render
+
+# Screenshots
+*.png
+*.jpg
+*.jpeg
+
+# Firebase cache
+.firebase/
+
+# Roo configuration
+.roo/
 # render.yaml  # Commented out - this is a deployment file that should be committed
